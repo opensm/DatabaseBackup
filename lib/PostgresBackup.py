@@ -142,10 +142,9 @@ class PostgresDumps:
         """
         if not isinstance(db_config, str):
             raise Exception("输入数据库类型错误！{0}", db_config)
-        psql = os.path.join(EXEC_BIN, 'psql')
         pg_basebackup = os.path.join(EXEC_BIN, 'pg_basebackup')
         if not os.path.exists(pg_basebackup):
-            raise EnvironmentError("可执行命令不存在: {0},{1}".format(psql, pg_basebackup))
+            raise EnvironmentError("可执行命令不存在: {0}".format(pg_basebackup))
         pg_params = copy.deepcopy(DB_CONFIG_DICT[db_config])
         ipaddress = self.get_address()
         pg_password = pg_params.pop('password')
