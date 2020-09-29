@@ -11,6 +11,10 @@ import datetime
 
 class PostgresDumps:
 
+    def __init__(self):
+        if not os.path.exists(BACKUP_DIR):
+            RecodeLog.error(msg="{0},备份目录不存在".format(BACKUP_DIR))
+
     @staticmethod
     def exec_command(command):
         """
