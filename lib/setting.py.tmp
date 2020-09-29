@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+import os
+
+LOG_DIR = "/tmp"
+LOG_FILE = "backup.log"
+LOG_LEVEL = "INFO"
+# 命令行所在目录
+EXEC_BIN = "/usr/bin"
+
+DB_CONFIG_DICT = {
+    "nccc": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "user": 'postgres',
+        "password": "postgres"
+    }
+}
+RSYNC_CONFIG_DICT = {
+    "nccc": {
+        "host": "10.253.100.30",
+        "port": 873,
+        "mode": "nccc_database",
+        "user": "nccc_database",
+        "passwd": "Mq1bI0qAuqSa_0HN9"
+    }
+}
+
+BACKUP_DIR = "/data/pg_dump"
+GET_ADDRESS_CMD = "ifconfig|grep 192.168|awk '{print $2}'"
+
+BACKUP_PARAMS = "--verbose --clean --create"
+BASE_BACKUP_PARAMS = "-Ft  -z -R -P "
