@@ -53,7 +53,7 @@ class PostgresDumps:
         :param db_config:
         :return:
         """
-        if not isinstance(db_config, dict):
+        if not isinstance(db_config, str):
             raise Exception("输入数据库类型错误！{0}", db_config)
         psql = os.path.join(EXEC_BIN, 'psql')
         pg_dump = os.path.join(EXEC_BIN, 'pg_dump')
@@ -66,7 +66,7 @@ class PostgresDumps:
             raise Exception("没有获取到数据库列表:{0}".format(db_config))
 
         dump_params = copy.deepcopy(params)
-        for key, value in db_config.items():
+        for key, value in DB_CONFIG_DICT[db_config].items():
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
             print(db)
