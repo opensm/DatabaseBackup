@@ -2,10 +2,11 @@
 import sys
 from lib.Log import RecodeLog
 import os
-from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT
+from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT, BACKUP_DIR
 import psycopg2
-from psycopg2.extras import RealDictCursor
 import copy
+import socket
+import datetime
 
 
 class PostgresDumps:
@@ -45,8 +46,14 @@ class PostgresDumps:
         cursor = conn.cursor()
         cursor.execute("select pg_database.datname AS dbname from pg_database;")
         rows = cursor.fetchall()
-        print(rows)
         return rows
+
+    @staticmethod
+    def get_address():
+        """
+        :return:
+        """
+        return socket.gethostbyname(socket.gethostname())
 
     def postgres_dump(self, params, db_config):
         """
@@ -67,6 +74,7 @@ class PostgresDumps:
             raise Exception("没有获取到数据库列表:{0}".format(db_config))
 
         pg_params = copy.deepcopy(DB_CONFIG_DICT[db_config])
+        ipaddress = self.get_address()
         pg_password = pg_params.pop('password')
         pg_database = pg_params.pop('database')
         dump_params = "export PGPASSWORD={0} && {1} {2}".format(pg_password, pg_dump, copy.deepcopy(params))
@@ -74,5 +82,9 @@ class PostgresDumps:
         for key, value in pg_params.items():
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
-            dump_str = "{0} {1}".format(dump_params, db[0])
+            dump_str = "{0} {1}| gzip > ".format(
+                dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}".format(
+                    ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
+                ))
+            )
             print(dump_str)
