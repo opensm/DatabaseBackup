@@ -123,8 +123,9 @@ class PostgresDumps:
                         '''-vzrtopgPc ''' \
                         '''--progress ''' \
                         '''--timeout=%d''' \
+                        '''----port=%d''' \
                         ''' --chmod=o+r %s %s@%s::%s''' % (
-                            passwd, int(timeout), achieve, user, host, mode
+                            passwd, int(timeout), port, achieve, user, host, mode
                         )
         if not self.exec_command(command=rsync_cmd_str):
             RecodeLog.error(msg="推送文件失败！{0}".format(rsync_cmd_str))
