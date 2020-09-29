@@ -42,6 +42,7 @@ class PostgresDumps:
         cursor = conn.cursor()
         cursor.execute("select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;")
         rows = cursor.fetchall()
+        print(rows)
         return rows
 
     def postgres_dump(self, params, db_config):
