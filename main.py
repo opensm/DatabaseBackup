@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib.PostgresBackup import PostgresDumps
 import sys
 import getopt
