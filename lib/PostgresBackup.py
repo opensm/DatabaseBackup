@@ -2,7 +2,7 @@
 import sys
 from lib.Log import RecodeLog
 import os
-from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT, BACKUP_DIR
+from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT, BACKUP_DIR, GET_ADDRESS_CMD
 import psycopg2
 import copy
 import socket
@@ -26,7 +26,7 @@ class PostgresDumps:
                 (status, output) = subprocess.getstatusoutput(cmd=command)
             if status != 0:
                 raise Exception(output)
-            RecodeLog.info(msg="执行命令成功：{0}".format(command))
+            RecodeLog.info(msg="执行命令成功：{0},{1}".format(command, output))
             return True
         except Exception as error:
             RecodeLog.error("执行命令异常：{0},原因:{1}".format(command, error))
@@ -54,6 +54,21 @@ class PostgresDumps:
         :return:
         """
         return socket.gethostbyname(socket.gethostname())
+
+    @staticmethod
+    def get_address():
+        """
+        :return:
+        """
+        if sys.version_info < (3, 0):
+            import commands
+            (status, output) = commands.getstatusoutput(cmd=GET_ADDRESS_CMD)
+        else:
+            import subprocess
+            (status, output) = subprocess.getstatusoutput(cmd=GET_ADDRESS_CMD)
+        if status != 0:
+            RecodeLog.error("执行命令异常：{0},原因:{1}".format(GET_ADDRESS_CMD, output))
+            raise Exception(output)
 
     def postgres_dump(self, params, db_config):
         """
