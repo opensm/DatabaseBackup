@@ -66,6 +66,7 @@ class PostgresDumps:
             raise Exception("没有获取到数据库列表:{0}".format(db_config))
 
         dump_params = copy.deepcopy(params)
+        dump_str = ""
         pg_params = copy.deepcopy(DB_CONFIG_DICT[db_config])
         print(pg_params)
         pg_password = pg_params.pop('password')
@@ -75,4 +76,4 @@ class PostgresDumps:
         for db in dblist:
             print(db)
             dump_str = "{0} {1}".format(pg_dump, dump_params)
-            print(dump_str)
+        print(dump_str)
