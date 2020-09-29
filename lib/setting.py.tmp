@@ -17,11 +17,11 @@ DB_CONFIG_DICT = {
 }
 RSYNC_CONFIG_DICT = {
     "nccc": {
-        "host": "10.253.100.30",
+        "host": "",
         "port": 873,
-        "mode": "nccc_database",
-        "user": "nccc_database",
-        "passwd": "Mq1bI0qAuqSa_0HN9"
+        "mode": "",
+        "user": "",
+        "passwd": ""
     }
 }
 
