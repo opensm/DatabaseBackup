@@ -107,7 +107,7 @@ class PostgresDumps:
                 RecodeLog.info(msg="备份数据库成功：{0}".format(dump_str))
             self.rsync_dump(**rsync_params)
 
-    def rsync_dump(self, passwd, timeout, achieve, user, host, mode, port=873):
+    def rsync_dump(self, passwd, achieve, user, host, mode, port=873, timeout=60):
         """
         :param passwd:
         :param timeout:
