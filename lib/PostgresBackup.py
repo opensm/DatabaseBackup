@@ -122,9 +122,9 @@ class PostgresDumps:
                         ''' && /usr/bin/rsync ''' \
                         '''-vzrtopgPc ''' \
                         '''--progress ''' \
-                        '''--timeout=%d''' \
-                        '''--port=%d''' \
-                        ''' --chmod=o+r %s %s@%s::%s''' % (
+                        '''--timeout=%d ''' \
+                        '''--port=%d ''' \
+                        '''--chmod=o+r %s %s@%s::%s''' % (
                             passwd, int(timeout), port, achieve, user, host, mode
                         )
         if not self.exec_command(command=rsync_cmd_str):
