@@ -53,13 +53,6 @@ class PostgresDumps:
         """
         :return:
         """
-        return socket.gethostbyname(socket.gethostname())
-
-    @staticmethod
-    def get_address():
-        """
-        :return:
-        """
         if sys.version_info < (3, 0):
             import commands
             (status, output) = commands.getstatusoutput(cmd=GET_ADDRESS_CMD)
