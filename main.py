@@ -8,7 +8,7 @@ from lib.setting import BACKUP_PARAMS, BASE_BACKUP_PARAMS
 
 def useage():
     print("%s -h \t#帮助文档" % sys.argv[0])
-    print("%s -b #备份postgres的配置 \t#备份postgres数据" % sys.argv[0])
+    print("%s -b [备份postgres的配置] \t#备份postgres数据" % sys.argv[0])
     print("%s -r [相关同步配置] -p [推送匹配字符，绝对路径] \t#手动推送文件" % sys.argv[0])
 
 
