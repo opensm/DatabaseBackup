@@ -160,5 +160,5 @@ class PostgresDumps:
         ))
         if not os.path.exists(achieve):
             os.makedirs(achieve)
-        pg_basedump_str = "{0} {1} -D {2} ".format(pg_dump, dump_params, achieve)
+        pg_basedump_str = "{0} {1} -D {2} ".format(pg_basebackup, dump_params, achieve)
         print(pg_basedump_str)
