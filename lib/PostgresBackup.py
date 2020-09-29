@@ -14,6 +14,7 @@ class PostgresDumps:
     def __init__(self):
         if not os.path.exists(BACKUP_DIR):
             RecodeLog.error(msg="{0},备份目录不存在".format(BACKUP_DIR))
+            sys.exit(1)
 
     @staticmethod
     def exec_command(command):
