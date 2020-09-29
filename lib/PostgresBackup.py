@@ -123,7 +123,7 @@ class PostgresDumps:
                         '''-vzrtopgPc ''' \
                         '''--progress ''' \
                         '''--timeout=%d''' \
-                        '''----port=%d''' \
+                        '''--port=%d''' \
                         ''' --chmod=o+r %s %s@%s::%s''' % (
                             passwd, int(timeout), port, achieve, user, host, mode
                         )
