@@ -69,6 +69,7 @@ class PostgresDumps:
         if status != 0:
             RecodeLog.error("执行命令异常：{0},原因:{1}".format(GET_ADDRESS_CMD, output))
             raise Exception(output)
+        return output
 
     def postgres_dump(self, params, db_config):
         """
