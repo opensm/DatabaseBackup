@@ -5,7 +5,6 @@ import os
 from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT, BACKUP_DIR, GET_ADDRESS_CMD
 import psycopg2
 import copy
-import socket
 import datetime
 
 
