@@ -40,7 +40,7 @@ class PostgresDumps:
         config_dict = DB_CONFIG_DICT[db_config]
         conn = psycopg2.connect(**config_dict)
         cursor = conn.cursor()
-        cursor.execute("show database;")
+        cursor.execute("select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;")
         rows = cursor.fetchall()
         return rows
 
