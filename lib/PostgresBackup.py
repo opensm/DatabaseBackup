@@ -39,7 +39,7 @@ class PostgresDumps:
             raise Exception("{0}:相关配置不存在，数据库配置列表中！")
         config_dict = DB_CONFIG_DICT[db_config]
         conn = psycopg2.connect(**config_dict)
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         cursor.execute("select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;")
         rows = cursor.fetchall()
         print(rows)
