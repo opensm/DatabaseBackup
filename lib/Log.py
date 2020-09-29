@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from lib.setting import LOG_DIR, LOG_FILE, LOG_LEVEL
