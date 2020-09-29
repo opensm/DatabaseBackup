@@ -87,6 +87,7 @@ class PostgresDumps:
         pg_password = pg_params.pop('password')
         pg_database = pg_params.pop('database')
         dump_params = "export PGPASSWORD={0} && {1} {2}".format(pg_password, pg_dump, copy.deepcopy(params))
+        rsync_params = copy.deepcopy(RSYNC_CONFIG_DICT[db_config])
 
         for key, value in pg_params.items():
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
@@ -99,11 +100,12 @@ class PostgresDumps:
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
             )
+            rsync_params['achieve'] = achieve
             if not self.exec_command(command=dump_str):
                 RecodeLog.error(msg="备份数据库失败：{0}".format(dump_str))
             else:
                 RecodeLog.info(msg="备份数据库成功：{0}".format(dump_str))
-            self.rsync_dump(**RSYNC_CONFIG_DICT[db_config], achieve=achieve)
+            self.rsync_dump(**rsync_params)
 
     def rsync_dump(self, passwd, timeout, achieve, user, host, mode):
         """
