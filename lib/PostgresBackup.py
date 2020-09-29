@@ -91,6 +91,9 @@ class PostgresDumps:
         for key, value in pg_params.items():
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
+            achieve = os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
+                ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
+            ))
             dump_str = "{0} {1}| gzip > {2}".format(
                 dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
@@ -100,3 +103,29 @@ class PostgresDumps:
                 RecodeLog.error(msg="备份数据库失败：{0}".format(dump_str))
             else:
                 RecodeLog.info(msg="备份数据库成功：{0}".format(dump_str))
+            self.rsync_dump(**RSYNC_CONFIG_DICT[db_config], achieve=achieve)
+
+    def rsync_dump(self, passwd, timeout, achieve, user, host, mode):
+        """
+        :param passwd:
+        :param timeout:
+        :param achieve:
+        :param user:
+        :param host:
+        :param mode:
+        :return:
+        """
+        rsync_cmd_str = '''export RSYNC_PASSWORD="%s"''' \
+                        ''' && /usr/bin/rsync ''' \
+                        '''-vzrtopgPc ''' \
+                        '''--progress ''' \
+                        '''--timeout=%d''' \
+                        ''' --chmod=o+r %s %s@%s::%s''' % (
+                            passwd, int(timeout), achieve, user, host, mode
+                        )
+        if not self.exec_command(command=rsync_cmd_str):
+            RecodeLog.error(msg="推送文件失败！{0}".format(rsync_cmd_str))
+            return False
+        else:
+            RecodeLog.info(msg="推送文件成功！{0}".format(rsync_cmd_str))
+            return True
