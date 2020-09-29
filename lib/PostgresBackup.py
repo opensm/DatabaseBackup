@@ -103,7 +103,6 @@ class PostgresDumps:
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
             )
-            print(dump_str)
             if not self.exec_command(command=dump_str):
                 RecodeLog.error(msg="备份数据库失败：{0}".format(dump_str))
             else:
