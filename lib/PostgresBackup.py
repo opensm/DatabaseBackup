@@ -107,7 +107,7 @@ class PostgresDumps:
                 RecodeLog.info(msg="备份数据库成功：{0}".format(dump_str))
             self.rsync_dump(**rsync_params)
 
-    def rsync_dump(self, passwd, timeout, achieve, user, host, mode):
+    def rsync_dump(self, passwd, timeout, achieve, user, host, mode, port=873):
         """
         :param passwd:
         :param timeout:
@@ -115,6 +115,7 @@ class PostgresDumps:
         :param user:
         :param host:
         :param mode:
+        :param port:
         :return:
         """
         rsync_cmd_str = '''export RSYNC_PASSWORD="%s"''' \
