@@ -99,7 +99,7 @@ class PostgresDumps:
             achieve = os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                 ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
             ))
-            dump_str = "{0} {1}| gzip > {2} && md5sum {2} > {2}.md5".format(
+            dump_str = "{0} {1}| /usr/bin/gzip > {2} && md5sum {2} > {2}.md5".format(
                 dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
