@@ -35,7 +35,7 @@ class PostgresDumps:
         :param db_config:
         :return:
         """
-        if not db_config in DB_CONFIG_DICT.keys():
+        if db_config not in DB_CONFIG_DICT.keys():
             raise Exception("{0}:相关配置不存在，数据库配置列表中！")
         config_dict = DB_CONFIG_DICT[db_config]
         conn = psycopg2.connect(**config_dict)
