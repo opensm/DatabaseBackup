@@ -4,7 +4,7 @@ from lib.Log import RecodeLog
 import os
 from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT
 import psycopg2
-from psycopg2.extras import DictCursor
+from psycopg2.extras import DictCursorBase
 
 
 class PostgresDumps:
@@ -40,7 +40,7 @@ class PostgresDumps:
             raise Exception("{0}:相关配置不存在，数据库配置列表中！")
         config_dict = DB_CONFIG_DICT[db_config]
         conn = psycopg2.connect(**config_dict)
-        cursor = conn.cursor(cursor_factory=DictCursor)
+        cursor = conn.cursor(cursor_factory=DictCursorBase)
         cursor.execute("select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;")
         rows = cursor.fetchall()
         print(rows)
