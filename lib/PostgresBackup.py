@@ -67,6 +67,7 @@ class PostgresDumps:
 
         dump_params = copy.deepcopy(params)
         pg_params = copy.deepcopy(DB_CONFIG_DICT)
+        print(pg_params)
         pg_password = pg_params.pop('password')
         pg_database = pg_params.pop('database')
         for key, value in pg_params.items():
