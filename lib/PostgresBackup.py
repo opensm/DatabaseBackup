@@ -169,3 +169,18 @@ class PostgresDumps:
             RecodeLog.info(msg="全量备份成功！{0}".format(pg_basedump_str))
             self.rsync_dump(**rsync_params)
             return True
+
+    def rsync_file(self, rsync_conf, compare):
+        """
+        :param rsync_conf:
+        :param compare:
+        :return:
+        """
+        if isinstance(rsync_conf, str):
+            raise Exception("获取推送列表的配置有问题:{0}".format(rsync_conf))
+        if rsync_conf not in RSYNC_CONFIG_DICT.keys():
+            raise Exception("{0},不存在:{1}".format(rsync_conf, RSYNC_CONFIG_DICT))
+        rsync_config = copy.deepcopy(RSYNC_CONFIG_DICT)
+        rsync_config['achieve'] = compare
+        if not self.rsync_dump(**rsync_config):
+            raise Exception("推送异常")
