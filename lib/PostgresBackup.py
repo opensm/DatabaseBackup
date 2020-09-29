@@ -74,5 +74,5 @@ class PostgresDumps:
         for key, value in pg_params.items():
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
-            dump_str = "{0} {1}".format(dump_params, db)
+            dump_str = "{0} {1}".format(dump_params, db[0])
             print(dump_str)
