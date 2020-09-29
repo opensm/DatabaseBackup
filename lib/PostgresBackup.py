@@ -83,7 +83,7 @@ class PostgresDumps:
             dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
             dump_str = "{0} {1}| gzip > ".format(
-                dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}".format(
+                dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
             )
