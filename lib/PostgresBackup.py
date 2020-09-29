@@ -5,6 +5,7 @@ import os
 from lib.setting import EXEC_BIN, DB_CONFIG_DICT, RSYNC_CONFIG_DICT
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import copy
 
 
 class PostgresDumps:
@@ -41,7 +42,7 @@ class PostgresDumps:
         config_dict = DB_CONFIG_DICT[db_config]
         conn = psycopg2.connect(**config_dict)
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        cursor.execute("select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;")
+        cursor.execute("select pg_database.datname AS size from pg_database;")
         rows = cursor.fetchall()
         print(rows)
         return rows
@@ -52,6 +53,8 @@ class PostgresDumps:
         :param db_config:
         :return:
         """
+        if not isinstance(db_config, dict):
+            raise Exception("输入数据库类型错误！{0}", db_config)
         psql = os.path.join(EXEC_BIN, 'psql')
         pg_dump = os.path.join(EXEC_BIN, 'pg_dump')
         if not os.path.exists(psql) or not os.path.exists(pg_dump):
@@ -62,7 +65,10 @@ class PostgresDumps:
         if len(dblist) == 0 or not dblist:
             raise Exception("没有获取到数据库列表:{0}".format(db_config))
 
+        dump_params = copy.deepcopy(params)
+        for key, value in db_config.items():
+            dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
             print(db)
-            dump_str = "{0} {1}".format(pg_dump, params)
+            dump_str = "{0} {1}".format(pg_dump, dump_params)
             print(dump_str)
