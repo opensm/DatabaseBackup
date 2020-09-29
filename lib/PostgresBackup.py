@@ -104,3 +104,7 @@ class PostgresDumps:
                 ))
             )
             print(dump_str)
+            if not self.exec_command(command=dump_str):
+                RecodeLog.error(msg="备份数据库失败：{0}".format(dump_str))
+            else:
+                RecodeLog.info(msg="备份数据库成功：{0}".format(dump_str))
