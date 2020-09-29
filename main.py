@@ -19,7 +19,7 @@ def main():
     try:
         options, args = getopt.getopt(
             sys.argv[1:],
-            "b:r:p:"
+            "b:r:p:h"
         )
     except getopt.GetoptError:
         print("%s -h" % sys.argv[0])
