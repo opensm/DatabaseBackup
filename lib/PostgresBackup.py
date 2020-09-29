@@ -100,7 +100,7 @@ class PostgresDumps:
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
             )
-            rsync_params['achieve'] = achieve
+            rsync_params['achieve'] = "{0}.*".format(os.path.splitext(achieve)[0])
             if not self.exec_command(command=dump_str):
                 RecodeLog.error(msg="备份数据库失败：{0}".format(dump_str))
             else:
@@ -160,5 +160,12 @@ class PostgresDumps:
         ))
         if not os.path.exists(achieve):
             os.makedirs(achieve)
-        pg_basedump_str = "{0} {1} -D {2} ".format(pg_basebackup, dump_params, achieve)
-        print(pg_basedump_str)
+        pg_basedump_str = "{0} -D {1} ".format(dump_params, achieve)
+        rsync_params['achieve'] = achieve
+        if not self.exec_command(command=pg_basedump_str):
+            RecodeLog.error(msg="全量备份异常！{0}".format(pg_basedump_str))
+            return False
+        else:
+            RecodeLog.info(msg="全量备份成功！{0}".format(pg_basedump_str))
+            self.rsync_dump(**rsync_params)
+            return True
