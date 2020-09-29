@@ -65,15 +65,16 @@ class PostgresDumps:
         if len(dblist) == 0 or not dblist:
             raise Exception("没有获取到数据库列表:{0}".format(db_config))
 
-        dump_params = copy.deepcopy(params)
-        dump_str = ""
         pg_params = copy.deepcopy(DB_CONFIG_DICT[db_config])
         print(pg_params)
         pg_password = pg_params.pop('password')
         pg_database = pg_params.pop('database')
+        dump_params = "export PGPASSWORD={0} && {1} {2}".format(pg_password, pg_dump, copy.deepcopy(params))
+        dump_str = ""
+
         for key, value in pg_params.items():
-            dump_params = "export PGPASSWORD={3} && {0} --{1}={2}".format(dump_params, key, value, pg_database)
+            dump_params = "{0} --{1}={2}".format(dump_params, key, value)
         for db in dblist:
             print(db)
-            dump_str = "{0} {1}".format(pg_dump, dump_params)
+            dump_str = "{0} {1}".format(dump_params, db)
         print(dump_str)
