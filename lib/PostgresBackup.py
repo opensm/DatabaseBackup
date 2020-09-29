@@ -95,7 +95,7 @@ class PostgresDumps:
             achieve = os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                 ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
             ))
-            dump_str = "{0} {1}| gzip > {2}".format(
+            dump_str = "{0} {1}| gzip > {2} && md5sum {2} > {2}.md5".format(
                 dump_params, db[0], os.path.join(BACKUP_DIR, "{0}_{1}_{2}.gz".format(
                     ipaddress, db[0], datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
                 ))
@@ -133,3 +133,33 @@ class PostgresDumps:
         else:
             RecodeLog.info(msg="推送文件成功！{0}".format(rsync_cmd_str))
             return True
+
+    def pg_basedump(self, db_config, params):
+        """
+        :param db_config:
+        :param params:
+        :return:
+        """
+        if not isinstance(db_config, str):
+            raise Exception("输入数据库类型错误！{0}", db_config)
+        psql = os.path.join(EXEC_BIN, 'psql')
+        pg_dump = os.path.join(EXEC_BIN, 'pg_basedump')
+        if not os.path.exists(psql) or not os.path.exists(pg_dump):
+            raise EnvironmentError("可执行命令不存在: {0},{1}".format(psql, pg_dump))
+        pg_params = copy.deepcopy(DB_CONFIG_DICT[db_config])
+        ipaddress = self.get_address()
+        pg_password = pg_params.pop('password')
+        pg_database = pg_params.pop('database')
+        dump_params = "export PGPASSWORD={0} && {1} {2}".format(pg_password, pg_dump, copy.deepcopy(params))
+        rsync_params = copy.deepcopy(RSYNC_CONFIG_DICT[db_config])
+
+        for key, value in pg_params.items():
+            dump_params = "{0} --{1}={2}".format(dump_params, key, value)
+
+        achieve = os.path.join(BACKUP_DIR, "{0}_all-dump_{1}".format(
+            ipaddress, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
+        ))
+        if not os.path.exists(achieve):
+            os.makedirs(achieve)
+        pg_basedump_str = "{0} {1} -D {2} ".format(pg_dump, dump_params, achieve)
+        print(pg_basedump_str)
