@@ -12,7 +12,8 @@ DB_CONFIG_DICT = {
         "host": "127.0.0.1",
         "port": 5432,
         "user": 'postgres',
-        "password": "postgres"
+        "password": "postgres",
+        "database": "postgres"
     }
 }
 RSYNC_CONFIG_DICT = {
@@ -26,7 +27,7 @@ RSYNC_CONFIG_DICT = {
 }
 
 BACKUP_DIR = "/data/pg_dump"
-GET_ADDRESS_CMD = "ifconfig|grep 192.168|awk '{print $2}'"
+GET_ADDRESS_CMD = "/usr/sbin/ifconfig|grep 192.168|awk '{print $2}'"
 
 BACKUP_PARAMS = "--verbose --clean --create"
 BASE_BACKUP_PARAMS = "-Ft  -z -R -P "
