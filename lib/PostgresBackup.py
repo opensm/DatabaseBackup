@@ -126,6 +126,7 @@ class PostgresDumps:
                         ''' && /usr/bin/rsync ''' \
                         '''-vzrtopgPc ''' \
                         '''--progress ''' \
+                        '''--remove-source-files''' \
                         '''--timeout=%d ''' \
                         '''--port=%d ''' \
                         '''--chmod=o+r %s %s@%s::%s''' % (
